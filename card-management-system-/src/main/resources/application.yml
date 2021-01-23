@@ -1,0 +1,28 @@
+spring:
+  security:
+    user:
+      name: javier
+      password: $2y$10$09kNg0uOo3xgd.oVRA18SeP4kcBhN67UQ/Tz5CiwtVYegdwDi3XFO   #456
+  datasource:
+    password: 123456
+    url: jdbc:postgresql://localhost:5432/card_management_system_database
+    username: admin
+  jpa:
+    database: POSTGRESQL
+    database-platform: postgres
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        cache:
+          use_query_cache: false
+          use_second_level_cache: false
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        type: trace
+  liquibase:
+    change-log: classpath:db/master-changelog.xml
+
+server:
+  port: 8081

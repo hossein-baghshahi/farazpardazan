@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation=
+                "http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="0000" author="card-management">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(64)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(48)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="family" type="varchar(48)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mobile_number" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="cards">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(48)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_number" type="varchar(16)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="owner_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+
+            </column>
+
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="owner_user_id"
+                                 baseTableName="cards"
+                                 constraintName="fk_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+        <createTable tableName="transfers">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="source_card_number" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="destination_card_number" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(16)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <sqlFile path="db/sql/create-users.sql"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Acceptto Confidential
+  ~
+  ~ This file is part of 'Mirza' module of the 'PAM' project.
+  ~
+  ~ Copyright (c) 2017-2020 Acceptto Corporation All Rights Reserved.
+  ~
+  ~ All information contained herein is, and remains the property
+  ~ of Acceptto Corporation.
+  ~ The intellectual and technical concepts contained herein are proprietary
+  ~ to Acceptto Corporation and covered by U.S. and Foreign Patents,
+  ~ patents in process, and are protected by trade secret or copyright law.
+  ~ Dissemination of this information or reproduction of this material
+  ~ is strictly forbidden unless prior written permission is obtained
+  ~ from Acceptto Corporation.
+  -->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <logger name="com.acceptto.pam.mirza" level="TRACE"/>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="org.springframework.security" level="INFO"/>
+    <logger name="org.springframework.cache" level="INFO"/>
+
+
+    <logger name="org.apache" level="INFO"/>
+
+    <logger name="ch.qos.logback" level="INFO"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>
+                %highlight(%-5level) %magenta(%date{HH:mm:ss.SSS}) %yellow(%thread) %cyan(%logger{0}) ~ %highlight(%msg) %n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+
+</configuration>
