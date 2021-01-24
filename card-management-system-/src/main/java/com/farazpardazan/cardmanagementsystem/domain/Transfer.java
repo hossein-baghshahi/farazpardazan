@@ -17,11 +17,11 @@ public class Transfer {
     private Long id;
 
     @NotNull(message = "{transfer.source.card.number.empty}")
-    @Column(name = "source_card_number",nullable = false)
+    @Column(name = "source_card_number", nullable = false)
     private String sourceCard;
 
     @NotNull(message = "{transfer.destination.card.number.empty}")
-    @Column(name = "destination_card_number",nullable = false)
+    @Column(name = "destination_card_number", nullable = false)
     private String destinationCard;
 
     @NotNull(message = "{transfer.amount.empty}")
@@ -34,7 +34,7 @@ public class Transfer {
     private Status status = Status.PENDING;
 
     @NotNull(message = "{transfer.created_date_time.null}")
-    @Column(name = "created_date" ,nullable = false)
+    @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
 
     @Transient

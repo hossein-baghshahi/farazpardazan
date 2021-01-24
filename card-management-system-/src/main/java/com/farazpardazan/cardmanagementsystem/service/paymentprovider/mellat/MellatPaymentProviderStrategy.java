@@ -5,8 +5,6 @@ import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentPro
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderStrategy;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyName;
 import com.fasterxml.jackson.databind.ObjectMapper;
-/*import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;*/
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -33,15 +31,14 @@ public class MellatPaymentProviderStrategy implements PaymentProviderStrategy {
                 .build();
     }
 
-
     @Override
     public void moneyTransfer(Transfer transfer) throws PaymentProviderException {
-        MellatPaymentDto mellatPaymentDto = new MellatPaymentDto(transfer.getSourceCard(),transfer.getDestinationCard(),
-                transfer.getCvv(),transfer.getExpirationDate(),transfer.getPin(),transfer.getAmount().toString());
+        MellatPaymentDto mellatPaymentDto = new MellatPaymentDto(transfer.getSourceCard(), transfer.getDestinationCard(),
+                transfer.getCvv(), transfer.getExpirationDate(), transfer.getPin(), transfer.getAmount().toString());
         ResponseEntity<MellatPaymentResponse> response;
 
         try {
-            response = restTemplate.postForEntity(URL,mellatPaymentDto, MellatPaymentResponse.class);
+            response = restTemplate.postForEntity(URL, mellatPaymentDto, MellatPaymentResponse.class);
         } catch (Exception ex) {
             throw new PaymentProviderException(ex.getMessage());
         }

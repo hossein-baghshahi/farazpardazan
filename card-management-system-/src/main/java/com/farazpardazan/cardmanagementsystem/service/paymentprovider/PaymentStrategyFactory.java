@@ -20,7 +20,7 @@ public class PaymentStrategyFactory {
         createPaymentStrategy(paymentStrategySet);
     }
 
-    public PaymentProviderStrategy getAppropriatePaymentProvider(String sourceCardNumber){
+    public PaymentProviderStrategy getAppropriatePaymentProvider(String sourceCardNumber) {
         if (sourceCardNumber.startsWith("6037"))
             return paymentStrategies.get(PaymentStrategyName.SAMAN);
         return paymentStrategies.get(PaymentStrategyName.MELLAT);

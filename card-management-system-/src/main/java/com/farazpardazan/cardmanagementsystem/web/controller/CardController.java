@@ -28,26 +28,25 @@ public class CardController {
     }
 
     @PostMapping
-    public ResponseEntity addNewCard(@Validated @RequestBody CardDto cardDto){
+    public ResponseEntity addNewCard(@Validated @RequestBody CardDto cardDto) {
         Long id = cardService.addCard(conversionService.convert(cardDto, Card.class));
 
         return ResponseEntity.created(URI.create("cards" + "/" + id)).build();
     }
 
     @DeleteMapping("/{cardNumber}")
-    public ResponseEntity deleteCard(@PathVariable("cardNumber") String cardNumber){
+    public ResponseEntity deleteCard(@PathVariable("cardNumber") String cardNumber) {
         cardService.deleteCard(cardNumber);
 
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity getAllCards(Pageable pageable){
+    public ResponseEntity getAllCards(Pageable pageable) {
         return ResponseEntity.ok(
                 cardService.getAllCurrentUserActiveCards(pageable)
                         .map(card -> conversionService.convert(card, CardDto.class)));
 
     }
-
 
 }

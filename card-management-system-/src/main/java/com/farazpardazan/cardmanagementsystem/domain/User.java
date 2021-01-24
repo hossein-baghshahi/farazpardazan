@@ -25,7 +25,7 @@ public class User {
     private String family;
 
     @NotBlank(message = "{user.mobile_number.empty}")
-    @Column(name = "mobile_number" ,nullable = false)
+    @Column(name = "mobile_number", nullable = false)
     private String mobileNumber;
 
     public void setId(Long id) {

@@ -32,20 +32,6 @@ public class MciNotificationProvider implements NotificationProvider {
     @Override
     public void sendNotification(NotificationData notificationData) {
 
-        /*ResponseEntity<MellatPaymentResponse> response;
-
-        try {
-            response = restTemplate.getForEntity(URL, MellatPaymentResponse.class);
-        } catch (Exception ex) {
-            throw new PaymentProviderException(ex.getMessage());
-        }
-
-
-        if (!response.getStatusCode().is2xxSuccessful())
-            throw new PaymentProviderException("Error in money transfer operation.");
-
-        if (!response.getBody().isSuccessful())
-            throw new PaymentProviderException("Money transfer failed.");*/
 
 
     }

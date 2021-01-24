@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CardDtoToCardConverter implements Converter<CardDto, Card> {
-    private final UserService  userService;
+    private final UserService userService;
 
     public CardDtoToCardConverter(UserService userService) {
         this.userService = userService;

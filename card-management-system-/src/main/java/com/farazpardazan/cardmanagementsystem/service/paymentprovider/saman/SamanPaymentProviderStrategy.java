@@ -1,13 +1,10 @@
 package com.farazpardazan.cardmanagementsystem.service.paymentprovider.saman;
 
 import com.farazpardazan.cardmanagementsystem.domain.Transfer;
-import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderStrategy;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderException;
+import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderStrategy;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyName;
-import com.farazpardazan.cardmanagementsystem.service.paymentprovider.mellat.MellatPaymentResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-/*import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;*/
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -34,16 +31,15 @@ public class SamanPaymentProviderStrategy implements PaymentProviderStrategy {
                 .build();
     }
 
-
     @Override
     public void moneyTransfer(Transfer transfer) throws PaymentProviderException {
-        SamanPaymentDto samanPaymentDto = new SamanPaymentDto(transfer.getSourceCard(),transfer.getDestinationCard(),
-                transfer.getCvv(),transfer.getExpirationDate(),transfer.getPin(),transfer.getAmount().toString());
+        SamanPaymentDto samanPaymentDto = new SamanPaymentDto(transfer.getSourceCard(), transfer.getDestinationCard(),
+                transfer.getCvv(), transfer.getExpirationDate(), transfer.getPin(), transfer.getAmount().toString());
 
         ResponseEntity<SamanPaymentResponse> response;
 
         try {
-            response = restTemplate.postForEntity(URL,samanPaymentDto, SamanPaymentResponse.class);
+            response = restTemplate.postForEntity(URL, samanPaymentDto, SamanPaymentResponse.class);
         } catch (Exception ex) {
             throw new PaymentProviderException(ex.getMessage());
         }

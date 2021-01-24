@@ -2,7 +2,6 @@ package com.farazpardazan.cardmanagementsystem.configuration;
 
 import com.farazpardazan.cardmanagementsystem.service.notification.NotificationMessage;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.internals.Sender;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +28,7 @@ public class KafkaSenderConfiguration {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        props.put(JsonSerializer.ADD_TYPE_INFO_HEADERS,false);
+        props.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
 
         return props;
     }

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 /**
  * @author Hossein Baghshahi
  */
-@Constraint(validatedBy = { CardNumberValidator.class })
+@Constraint(validatedBy = {CardNumberValidator.class})
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CardNumber {

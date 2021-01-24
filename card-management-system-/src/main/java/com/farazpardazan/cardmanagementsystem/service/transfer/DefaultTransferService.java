@@ -8,7 +8,6 @@ import com.farazpardazan.cardmanagementsystem.service.notification.NotificationS
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderException;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderStrategy;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyFactory;
-import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyName;
 import com.farazpardazan.cardmanagementsystem.service.user.UserService;
 import com.farazpardazan.cardmanagementsystem.web.dto.transfer.ReportDto;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -66,7 +64,7 @@ public class DefaultTransferService implements TransferService {
                     userService.getCurrentUser());
         } catch (PaymentProviderException e) {
             transfer.setStatus(Transfer.Status.FAILED);
-            logger.error("Money transfer failed",e);
+            logger.error("Money transfer failed", e);
         }
 
         transfer = transferRepository.save(transfer);

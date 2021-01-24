@@ -1,14 +1,12 @@
 package com.farazpardazan.cardmanagementsystem.validator.card;
 
-import org.springframework.util.StringUtils;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
  * @author Hossein Baghshahi
  */
-public class CardNumberValidator implements ConstraintValidator<CardNumber,String> {
+public class CardNumberValidator implements ConstraintValidator<CardNumber, String> {
     @Override
     public void initialize(CardNumber constraintAnnotation) {
 

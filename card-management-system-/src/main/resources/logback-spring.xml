@@ -34,7 +34,8 @@
         <encoder>
             <charset>utf-8</charset>
             <Pattern>
-                %highlight(%-5level) %magenta(%date{HH:mm:ss.SSS}) %yellow(%thread) %cyan(%logger{0}) ~ %highlight(%msg) %n
+                %highlight(%-5level) %magenta(%date{HH:mm:ss.SSS}) %yellow(%thread) %cyan(%logger{0}) ~ %highlight(%msg)
+                %n
             </Pattern>
         </encoder>
     </appender>

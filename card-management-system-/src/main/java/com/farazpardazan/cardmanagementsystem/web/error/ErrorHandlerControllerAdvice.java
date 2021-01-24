@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toList;
  * @author Hossein Baghshahi
  */
 @RestControllerAdvice
-public class ErrorHandlerControllerAdvice  extends ResponseEntityExceptionHandler {
+public class ErrorHandlerControllerAdvice extends ResponseEntityExceptionHandler {
 
     /**
      * Will be matched will all texts surrounding with curly braces
@@ -29,7 +29,6 @@ public class ErrorHandlerControllerAdvice  extends ResponseEntityExceptionHandle
      * @see #stripBraces(String)
      */
     private static final Pattern CODE_PATTERN = Pattern.compile("\\{(.*?)}");
-
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleError(Exception exception) {
@@ -39,14 +38,13 @@ public class ErrorHandlerControllerAdvice  extends ResponseEntityExceptionHandle
         return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
     }
 
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
         List<String> errorCodes = getErrorCodes(allErrors);
-        ErrorResponseDto errorResponse = new ErrorResponseDto(HttpStatus.BAD_REQUEST,errorCodes);
+        ErrorResponseDto errorResponse = new ErrorResponseDto(HttpStatus.BAD_REQUEST, errorCodes);
         return ResponseEntity.status(errorResponse.getHttpStatus()).body(errorResponse);
     }
 

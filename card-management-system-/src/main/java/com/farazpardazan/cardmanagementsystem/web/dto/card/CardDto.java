@@ -1,7 +1,6 @@
 package com.farazpardazan.cardmanagementsystem.web.dto.card;
 
 import com.farazpardazan.cardmanagementsystem.validator.card.CardNumber;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 

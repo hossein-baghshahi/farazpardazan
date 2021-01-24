@@ -10,9 +10,8 @@ import java.util.List;
 /**
  * @author Hossein Baghshahi
  */
-public interface TransferRepository extends JpaRepository<Transfer,Long>, QuerydslPredicateExecutor<Transfer> {
+public interface TransferRepository extends JpaRepository<Transfer, Long>, QuerydslPredicateExecutor<Transfer> {
 
-    List<Transfer> findAllBySourceCardAndCreatedDateBetween(String sourceCard, LocalDateTime from,LocalDateTime to);
-
+    List<Transfer> findAllBySourceCardAndCreatedDateBetween(String sourceCard, LocalDateTime from, LocalDateTime to);
 
 }

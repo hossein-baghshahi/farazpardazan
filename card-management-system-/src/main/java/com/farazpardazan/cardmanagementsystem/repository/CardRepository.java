@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * @author Hossein Baghshahi
  */
-public interface CardRepository extends JpaRepository<Card,Long>, QuerydslPredicateExecutor<Card> {
+public interface CardRepository extends JpaRepository<Card, Long>, QuerydslPredicateExecutor<Card> {
 
     Optional<Card> findByCardNumber(String cardNumber);
 

@@ -1,6 +1,5 @@
 package com.farazpardazan.cardmanagementsystem.web.controller;
 
-import com.farazpardazan.cardmanagementsystem.domain.Card;
 import com.farazpardazan.cardmanagementsystem.domain.Transfer;
 import com.farazpardazan.cardmanagementsystem.service.transfer.TransferService;
 import com.farazpardazan.cardmanagementsystem.web.dto.transfer.ReportDto;
@@ -41,10 +40,10 @@ public class TransferController {
 
     @GetMapping("/report")
     public ResponseEntity<Page<ReportDto>> getTransferReport(
-            @RequestParam("from") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime from,
-            @RequestParam("to") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") LocalDateTime to,
+            @RequestParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime from,
+            @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime to,
             Pageable pageable) {
-        Page<ReportDto> reports =  transferService.moneyTransferReport(pageable,from,to);
+        Page<ReportDto> reports = transferService.moneyTransferReport(pageable, from, to);
 
         return ResponseEntity.ok(reports);
     }

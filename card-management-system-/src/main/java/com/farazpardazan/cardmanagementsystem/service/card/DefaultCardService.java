@@ -29,7 +29,7 @@ public class DefaultCardService implements CardService {
     public Long addCard(Card card) {
         try {
             card = cardRepository.save(card);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new AddNewCardException("Error adding new card.");
         }
 
@@ -48,13 +48,13 @@ public class DefaultCardService implements CardService {
     public Page<Card> getAllCurrentUserActiveCards(Pageable pageable) {
         User currentUser = userService.getCurrentUser();
         Predicate predicate = QCard.card.owner.id.eq(currentUser.getId()).and(QCard.card.active);
-        Page<Card> userCards = cardRepository.findAll(predicate,pageable);
+        Page<Card> userCards = cardRepository.findAll(predicate, pageable);
 
         return userCards;
     }
 
     @Override
     public Page<Card> getAllActiveCards(Pageable pageable) {
-        return cardRepository.findAll(QCard.card.active,pageable);
+        return cardRepository.findAll(QCard.card.active, pageable);
     }
 }

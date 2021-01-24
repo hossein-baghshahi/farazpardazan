@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * @author Hossein Baghshahi
  */
 @Service
-public class DefaultUserService implements UserService{
+public class DefaultUserService implements UserService {
     private final UserRepository userRepository;
 
     public DefaultUserService(UserRepository userRepository) {
@@ -18,7 +18,7 @@ public class DefaultUserService implements UserService{
 
     @Override
     public User getCurrentUser() {
-        String currentUsername  = SecurityContextHolder.getContext().getAuthentication().getName();
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsername(currentUsername).orElseThrow(UserNotFoundException::new);
 
     }

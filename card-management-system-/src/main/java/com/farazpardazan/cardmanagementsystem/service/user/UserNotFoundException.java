@@ -3,7 +3,7 @@ package com.farazpardazan.cardmanagementsystem.service.user;
 /**
  * @author Hossein Baghshahi
  */
-public class UserNotFoundException extends RuntimeException{
+public class UserNotFoundException extends RuntimeException {
 
     private static final String defaultErrorMessage = "User not found.";
 
