@@ -3,11 +3,10 @@ package com.farazpardazan.cardmanagementsystem.service.paymentprovider.mellat;
 import com.farazpardazan.cardmanagementsystem.domain.Transfer;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderException;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderStrategy;
+import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentResponse;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyName;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,30 +14,22 @@ import org.springframework.web.client.RestTemplate;
  * @author Hossein Baghshahi
  */
 @Component
-public class MellatPaymentProviderStrategy implements PaymentProviderStrategy {
-
-    private final RestTemplate restTemplate;
-
-    private final ObjectMapper objectMapper;
+public class MellatPaymentProviderStrategy extends PaymentProviderStrategy {
 
     private final String URL = "https://first-payment-provider/payments/transfer";
 
     public MellatPaymentProviderStrategy(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-
-        this.restTemplate = new RestTemplateBuilder()
-                .messageConverters(new MappingJackson2HttpMessageConverter(this.objectMapper))
-                .build();
+        super(objectMapper);
     }
 
     @Override
     public void moneyTransfer(Transfer transfer) throws PaymentProviderException {
         MellatPaymentDto mellatPaymentDto = new MellatPaymentDto(transfer.getSourceCard(), transfer.getDestinationCard(),
                 transfer.getCvv(), transfer.getExpirationDate(), transfer.getPin(), transfer.getAmount().toString());
-        ResponseEntity<MellatPaymentResponse> response;
+        ResponseEntity<PaymentResponse> response;
 
         try {
-            response = restTemplate.postForEntity(URL, mellatPaymentDto, MellatPaymentResponse.class);
+            response = restTemplate.postForEntity(URL, mellatPaymentDto, PaymentResponse.class);
         } catch (Exception ex) {
             throw new PaymentProviderException(ex.getMessage());
         }

@@ -1,9 +1,10 @@
-package com.farazpardazan.cardmanagementsystem.service.paymentprovider.mellat;
+package com.farazpardazan.notificationsystem.provider.mci;
 
 /**
  * @author Hossein Baghshahi
  */
-public class MellatPaymentResponse {
+public class MciNotificationResponse {
+
     private boolean successful;
 
     public boolean isSuccessful() {

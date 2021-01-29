@@ -3,6 +3,7 @@ package com.farazpardazan.cardmanagementsystem.service.paymentprovider.saman;
 import com.farazpardazan.cardmanagementsystem.domain.Transfer;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderException;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderStrategy;
+import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentResponse;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyName;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -15,20 +16,12 @@ import org.springframework.web.client.RestTemplate;
  * @author Hossein Baghshahi
  */
 @Component
-public class SamanPaymentProviderStrategy implements PaymentProviderStrategy {
-
-    private final RestTemplate restTemplate;
-
-    private final ObjectMapper objectMapper;
+public class SamanPaymentProviderStrategy extends PaymentProviderStrategy {
 
     private final String URL = "https://second-payment-provider/cards/pay";
 
     public SamanPaymentProviderStrategy(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-
-        this.restTemplate = new RestTemplateBuilder()
-                .messageConverters(new MappingJackson2HttpMessageConverter(this.objectMapper))
-                .build();
+        super(objectMapper);
     }
 
     @Override
@@ -36,10 +29,10 @@ public class SamanPaymentProviderStrategy implements PaymentProviderStrategy {
         SamanPaymentDto samanPaymentDto = new SamanPaymentDto(transfer.getSourceCard(), transfer.getDestinationCard(),
                 transfer.getCvv(), transfer.getExpirationDate(), transfer.getPin(), transfer.getAmount().toString());
 
-        ResponseEntity<SamanPaymentResponse> response;
+        ResponseEntity<PaymentResponse> response;
 
         try {
-            response = restTemplate.postForEntity(URL, samanPaymentDto, SamanPaymentResponse.class);
+            response = restTemplate.postForEntity(URL, samanPaymentDto, PaymentResponse.class);
         } catch (Exception ex) {
             throw new PaymentProviderException(ex.getMessage());
         }

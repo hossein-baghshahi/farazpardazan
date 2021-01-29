@@ -1,9 +1,10 @@
-package com.farazpardazan.cardmanagementsystem.service.paymentprovider.saman;
+package com.farazpardazan.cardmanagementsystem.service.paymentprovider;
 
 /**
  * @author Hossein Baghshahi
  */
-public class SamanPaymentResponse {
+public class PaymentResponse {
+
     private boolean successful;
 
     public boolean isSuccessful() {

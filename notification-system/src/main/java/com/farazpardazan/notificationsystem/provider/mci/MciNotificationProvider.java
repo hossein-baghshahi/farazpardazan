@@ -30,8 +30,21 @@ public class MciNotificationProvider implements NotificationProvider {
     }
 
     @Override
-    public void sendNotification(NotificationData notificationData) {
+    public void sendNotification(NotificationData notificationData) throws NotificationProviderException {
 
+        ResponseEntity<MciNotificationResponse> response;
+
+        try {
+            response = restTemplate.postForEntity(URL, notificationData, MciNotificationResponse.class);
+        } catch (Exception ex) {
+            throw new NotificationProviderException(ex.getMessage());
+        }
+
+        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null)
+            throw new NotificationProviderException("Error in sending notification.");
+
+        if (!response.getBody().isSuccessful())
+            throw new NotificationProviderException("Sending notification failed.");
 
 
     }

@@ -2,6 +2,7 @@ package com.farazpardazan.notificationsystem.listener;
 
 import com.farazpardazan.notificationsystem.provider.NotificationProvider;
 import com.farazpardazan.notificationsystem.provider.mci.MciNotificationData;
+import com.farazpardazan.notificationsystem.provider.mci.NotificationProviderException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,12 @@ public class NotificationMessageListener {
         mciNotificationData.setMessage(notificationMessage.getMessage());
         mciNotificationData.setMobileNumber(notificationMessage.getMobileNumber());
 
-
-        notificationProvider.sendNotification(mciNotificationData);
+        try {
+            notificationProvider.sendNotification(mciNotificationData);
+        } catch (NotificationProviderException e) {
+            //todo retry
+            e.printStackTrace();
+        }
     }
 
 }
