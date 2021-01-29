@@ -1,2 +1,16 @@
 server:
   port: 8080
+
+resilience4j:
+  retry:
+    configs:
+      default:
+        maxRetryAttempts: 5
+        waitDuration: 30s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        retryExceptions:
+          - com.farazpardazan.notificationsystem.provider.NotificationProviderException
+    instances:
+      MciNotificationProvider:
+        baseConfig: default
