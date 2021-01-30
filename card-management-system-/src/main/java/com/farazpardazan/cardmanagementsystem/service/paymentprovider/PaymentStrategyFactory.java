@@ -27,7 +27,7 @@ public class PaymentStrategyFactory {
     }
 
     private void createPaymentStrategy(Set<PaymentProviderStrategy> paymentStrategySet) {
-        paymentStrategies = new HashMap<PaymentStrategyName, PaymentProviderStrategy>();
+        paymentStrategies = new HashMap<>();
         paymentStrategySet.forEach(
                 strategy -> paymentStrategies.put(strategy.getPaymentStrategyName(), strategy));
     }

@@ -57,11 +57,16 @@ public class DefaultTransferService implements TransferService {
                 .getAppropriatePaymentProvider(transfer.getSourceCard());
 
         try {
-            paymentProvider.moneyTransfer(transfer);
-            transfer.setStatus(Transfer.Status.SUCCESSFUL);
-            notificationService.sendNotification("successful payment from" + transfer.getSourceCard() +
-                            " to " + transfer.getDestinationCard() + "amount: " + transfer.getAmount(),
-                    userService.getCurrentUser());
+            Transfer.Status transferStatus = paymentProvider.moneyTransfer(transfer);
+            if (transferStatus.equals(Transfer.Status.SUCCESSFUL)) {
+                notificationService.sendNotification("successful payment from" + transfer.getSourceCard() +
+                                " to " + transfer.getDestinationCard() + "amount: " + transfer.getAmount(),
+                        userService.getCurrentUser());
+                transfer.setStatus(Transfer.Status.SUCCESSFUL);
+            } else {
+                transfer.setStatus(transferStatus);
+            }
+
         } catch (PaymentProviderException e) {
             transfer.setStatus(Transfer.Status.FAILED);
             logger.error("Money transfer failed", e);
