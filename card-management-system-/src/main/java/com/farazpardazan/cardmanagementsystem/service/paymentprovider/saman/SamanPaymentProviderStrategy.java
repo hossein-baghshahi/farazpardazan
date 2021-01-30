@@ -10,13 +10,13 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import static com.farazpardazan.cardmanagementsystem.configuration.Constants.PaymentProviders.SAMAN_URL;
+
 /**
  * @author Hossein Baghshahi
  */
 @Component
 public class SamanPaymentProviderStrategy extends PaymentProviderStrategy {
-
-    private final String URL = "https://second-payment-provider/cards/pay";
 
     public SamanPaymentProviderStrategy(ObjectMapper objectMapper) {
         super(objectMapper);
@@ -31,7 +31,7 @@ public class SamanPaymentProviderStrategy extends PaymentProviderStrategy {
         ResponseEntity<PaymentResponse> response;
 
         try {
-            response = restTemplate.postForEntity(URL, samanPaymentDto, PaymentResponse.class);
+            response = restTemplate.postForEntity(SAMAN_URL, samanPaymentDto, PaymentResponse.class);
         } catch (Exception ex) {
             throw new PaymentProviderException(ex.getMessage());
         }

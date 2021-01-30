@@ -10,13 +10,13 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import static com.farazpardazan.cardmanagementsystem.configuration.Constants.PaymentProviders.MELLAT_URL;
+
 /**
  * @author Hossein Baghshahi
  */
 @Component
 public class MellatPaymentProviderStrategy extends PaymentProviderStrategy {
-
-    private final String URL = "https://first-payment-provider/payments/transfer";
 
     public MellatPaymentProviderStrategy(ObjectMapper objectMapper) {
         super(objectMapper);
@@ -30,7 +30,7 @@ public class MellatPaymentProviderStrategy extends PaymentProviderStrategy {
         ResponseEntity<PaymentResponse> response;
 
         try {
-            response = restTemplate.postForEntity(URL, mellatPaymentDto, PaymentResponse.class);
+            response = restTemplate.postForEntity(MELLAT_URL, mellatPaymentDto, PaymentResponse.class);
         } catch (Exception ex) {
             throw new PaymentProviderException(ex.getMessage());
         }

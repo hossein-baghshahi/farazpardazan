@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+import static com.farazpardazan.cardmanagementsystem.configuration.Constants.URLMapping.CARDS;
+
 /**
  * @author Hossein Baghshahi
  */
 
 @RestController
-@RequestMapping("/api/cards")
+@RequestMapping(CARDS)
 public class CardController {
     private final CardService cardService;
 

@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
+import static com.farazpardazan.cardmanagementsystem.configuration.Constants.URLMapping.*;
+
 /**
  * @author Hossein Baghshahi
  */
 @RestController
-@RequestMapping("/api/transfer")
+@RequestMapping(TRANSFER)
 public class TransferController {
     private final TransferService transferService;
 
@@ -30,7 +32,7 @@ public class TransferController {
         this.conversionService = conversionService;
     }
 
-    @PostMapping("/card-to-card")
+    @PostMapping(CARD_TO_CARD)
     public ResponseEntity<TransferResultDto> cardToCardTransfer(@Validated @RequestBody TransferDto transferDto) {
         Transfer transfer =
                 transferService.cardToCardMoneyTransfer(conversionService.convert(transferDto, Transfer.class));
@@ -38,7 +40,7 @@ public class TransferController {
         return ResponseEntity.ok(conversionService.convert(transfer, TransferResultDto.class));
     }
 
-    @GetMapping("/report")
+    @GetMapping(REPORT)
     public ResponseEntity<Page<ReportDto>> getTransferReport(
             @RequestParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime from,
             @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime to,

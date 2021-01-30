@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import static com.farazpardazan.cardmanagementsystem.configuration.Constants.Kafka.SMS_TOPIC;
+
 /**
  * @author Hossein Baghshahi
  */
@@ -25,7 +27,7 @@ public class SmsNotificationService implements NotificationService {
         try {
             NotificationMessage notificationMessage =
                     new NotificationMessage(receiverUser.getMobileNumber(), message);
-            kafkaTemplate.send("farazpardaz-sms-notification", notificationMessage);
+            kafkaTemplate.send(SMS_TOPIC, notificationMessage);
         } catch (Exception exception) {
             logger.error("Error sending transfer notification", exception);
         }
