@@ -3,7 +3,6 @@ package com.farazpardazan.cardmanagementsystem.service.paymentprovider.saman;
 import com.farazpardazan.cardmanagementsystem.domain.Transfer;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderException;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyName;
-import com.farazpardazan.cardmanagementsystem.service.paymentprovider.mellat.MellatPaymentProviderStrategy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +15,8 @@ import org.springframework.test.web.client.MockRestServiceServer;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
@@ -42,9 +41,8 @@ class SamanPaymentProviderStrategyTest {
 
     private Transfer dummyTransfer;
 
-
     @BeforeEach
-    public void setup(){
+    public void setup() {
         objectMapper = new ObjectMapper();
         samanPaymentProviderStrategy = new SamanPaymentProviderStrategy(objectMapper);
         mockRestServiceServer = MockRestServiceServer.createServer(samanPaymentProviderStrategy.getRestTemplate());
@@ -65,32 +63,33 @@ class SamanPaymentProviderStrategyTest {
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withServerError().contentType(MediaType.APPLICATION_JSON));
 
-
         assertThatExceptionOfType(PaymentProviderException.class)
                 .isThrownBy(() -> samanPaymentProviderStrategy.moneyTransfer(dummyTransfer));
     }
 
     @Test
-    void moneyTransfer_WithFailedResponse_ShouldThrowException() {
+    void moneyTransfer_WithFailedResponse_ShouldThrowException() throws PaymentProviderException {
         String dummyResponseBody = "{\"successful\": \"false\"}";
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(url))
                 .andExpect(method(HttpMethod.POST)).andRespond(withSuccess()
                 .contentType(MediaType.APPLICATION_JSON).body(dummyResponseBody));
 
-        assertThatExceptionOfType(PaymentProviderException.class)
-                .isThrownBy(() -> samanPaymentProviderStrategy.moneyTransfer(dummyTransfer));
+        Transfer.Status transferStatus = samanPaymentProviderStrategy.moneyTransfer(dummyTransfer);
+
+        assertThat(transferStatus).isEqualTo(Transfer.Status.FAILED);
     }
 
     @Test
-    void moneyTransfer_WithoutSuccessfulResponse_ShouldNotThrowAnyException() {
+    void moneyTransfer_WithoutSuccessfulResponse_ShouldReturnSuccessful() throws PaymentProviderException {
         String dummyResponseBody = "{\"successful\": \"true\"}";
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(url))
                 .andExpect(method(HttpMethod.POST)).andRespond(withSuccess()
                 .contentType(MediaType.APPLICATION_JSON).body(dummyResponseBody));
 
-        assertThatNoException().isThrownBy(() -> samanPaymentProviderStrategy.moneyTransfer(dummyTransfer));
-    }
+        Transfer.Status transferStatus = samanPaymentProviderStrategy.moneyTransfer(dummyTransfer);
 
+        assertThat(transferStatus).isEqualTo(Transfer.Status.SUCCESSFUL);
+    }
 
     @Test
     void getPaymentStrategyName_ShouldReturnMellatPaymentStrategyName() {

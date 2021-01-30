@@ -11,14 +11,10 @@ import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentPro
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyFactory;
 import com.farazpardazan.cardmanagementsystem.service.user.UserService;
 import com.farazpardazan.cardmanagementsystem.web.dto.transfer.ReportDto;
-import com.google.common.collect.ImmutableList;
-import org.apache.commons.collections4.CollectionUtils;
-import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,11 +24,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -103,7 +96,7 @@ class DefaultTransferServiceTest {
         doReturn(paymentProviderStrategyMocked).when(paymentStrategyFactoryMocked)
                 .getAppropriatePaymentProvider(dummyTransfer.getSourceCard());
 
-        doNothing().when(paymentProviderStrategyMocked).moneyTransfer(dummyTransfer);
+        doReturn(Transfer.Status.SUCCESSFUL).when(paymentProviderStrategyMocked).moneyTransfer(dummyTransfer);
         dummyTransfer.setStatus(Transfer.Status.SUCCESSFUL);
         doReturn(dummyUser).when(userServiceMocked).getCurrentUser();
         doNothing().when(notificationServiceMocked).sendNotification(message, dummyUser);
@@ -130,7 +123,7 @@ class DefaultTransferServiceTest {
     void moneyTransferReport_WithValidInput_ShouldReturnPageOfReportDtos() {
         List<ReportDto> reportDtos =
                 List.of(new ReportDto(dummyCards.get(0).getCardNumber(),
-                                2L, 1L));
+                        2L, 1L));
 
         PageRequest pageRequest = PageRequest.of(0, 10);
         LocalDateTime from = LocalDateTime.now().minusDays(10);

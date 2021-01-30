@@ -4,7 +4,6 @@ import com.farazpardazan.cardmanagementsystem.domain.Transfer;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderException;
 import com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentStrategyName;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +15,8 @@ import org.springframework.test.web.client.MockRestServiceServer;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
@@ -43,7 +42,7 @@ class MellatPaymentProviderStrategyTest {
     private Transfer dummyTransfer;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         objectMapper = new ObjectMapper();
         mellatPaymentProviderStrategy = new MellatPaymentProviderStrategy(objectMapper);
         mockRestServiceServer = MockRestServiceServer.createServer(mellatPaymentProviderStrategy.getRestTemplate());
@@ -64,32 +63,33 @@ class MellatPaymentProviderStrategyTest {
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withServerError().contentType(MediaType.APPLICATION_JSON));
 
-
         assertThatExceptionOfType(PaymentProviderException.class)
                 .isThrownBy(() -> mellatPaymentProviderStrategy.moneyTransfer(dummyTransfer));
     }
 
     @Test
-    void moneyTransfer_WithFailedResponse_ShouldThrowException() {
+    void moneyTransfer_WithFailedResponse_ShouldThrowException() throws PaymentProviderException {
         String dummyResponseBody = "{\"successful\": \"false\"}";
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(url))
                 .andExpect(method(HttpMethod.POST)).andRespond(withSuccess()
                 .contentType(MediaType.APPLICATION_JSON).body(dummyResponseBody));
 
-        assertThatExceptionOfType(PaymentProviderException.class)
-                .isThrownBy(() -> mellatPaymentProviderStrategy.moneyTransfer(dummyTransfer));
+        Transfer.Status transferStatus = mellatPaymentProviderStrategy.moneyTransfer(dummyTransfer);
+
+        assertThat(transferStatus).isEqualTo(Transfer.Status.FAILED);
     }
 
     @Test
-    void moneyTransfer_WithoutSuccessfulResponse_ShouldNotThrowAnyException() {
+    void moneyTransfer_WithoutSuccessfulResponse_ShouldReturnSuccessful() throws PaymentProviderException {
         String dummyResponseBody = "{\"successful\": \"true\"}";
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(url))
                 .andExpect(method(HttpMethod.POST)).andRespond(withSuccess()
                 .contentType(MediaType.APPLICATION_JSON).body(dummyResponseBody));
 
-        assertThatNoException().isThrownBy(() -> mellatPaymentProviderStrategy.moneyTransfer(dummyTransfer));
-    }
+        Transfer.Status transferStatus = mellatPaymentProviderStrategy.moneyTransfer(dummyTransfer);
 
+        assertThat(transferStatus).isEqualTo(Transfer.Status.SUCCESSFUL);
+    }
 
     @Test
     void getPaymentStrategyName_ShouldReturnMellatPaymentStrategyName() {

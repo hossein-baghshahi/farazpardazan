@@ -30,9 +30,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 public class DefaultCardServiceTest {
 
-
     @Autowired
-    private  CardService cardService;
+    private CardService cardService;
 
     @MockBean
     private CardRepository cardRepositoryMocked;
@@ -44,10 +43,8 @@ public class DefaultCardServiceTest {
 
     private Card dummyCard;
 
-
-
     @BeforeEach
-    public void prepareDummies(){
+    public void prepareDummies() {
         dummyUser = new User();
         dummyUser.setUsername("javier");
         dummyUser.setName("javier");
@@ -73,7 +70,7 @@ public class DefaultCardServiceTest {
         doReturn(dummyCard).when(cardRepositoryMocked).save(dummyCard);
 
         cardService.addCard(dummyCard);
-        verify(cardRepositoryMocked,times(1)).save(dummyCard);
+        verify(cardRepositoryMocked, times(1)).save(dummyCard);
     }
 
     @Test
@@ -90,7 +87,7 @@ public class DefaultCardServiceTest {
 
         cardService.deleteCard(dummyCard.getCardNumber());
         dummyCard.setActive(false);
-        verify(cardRepositoryMocked,times(1)).save(dummyCard);
+        verify(cardRepositoryMocked, times(1)).save(dummyCard);
     }
 
     @Test
@@ -101,18 +98,18 @@ public class DefaultCardServiceTest {
         doReturn(dummyUser).when(userServiceMocked).getCurrentUser();
         Predicate predicate = QCard.card.owner.id.eq(dummyUser.getId()).and(QCard.card.active);
         doReturn(new PageImpl<>(Collections.singletonList(dummyCard)))
-                .when(cardRepositoryMocked).findAll(predicate,pageRequest);
+                .when(cardRepositoryMocked).findAll(predicate, pageRequest);
 
         cardService.getAllCurrentUserActiveCards(pageRequest);
         verify(cardRepositoryMocked, times(1)).findAll(predicate, pageRequest);
     }
 
     @TestConfiguration
-    public static class CardServiceTestConfiguration{
+    public static class CardServiceTestConfiguration {
 
         @Bean
-        public CardService cardService(CardRepository cardRepository, UserService userService){
-            return new DefaultCardService(cardRepository,userService);
+        public CardService cardService(CardRepository cardRepository, UserService userService) {
+            return new DefaultCardService(cardRepository, userService);
         }
 
     }

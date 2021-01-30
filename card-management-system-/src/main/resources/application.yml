@@ -19,10 +19,30 @@ spring:
           use_second_level_cache: false
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        show_sql: true
+        show_sql: false
         type: trace
   liquibase:
     change-log: classpath:db/master-changelog.xml
 
 server:
   port: 8081
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 10
+        recordExceptions:
+          - com.farazpardazan.cardmanagementsystem.service.paymentprovider.PaymentProviderException
+      instances:
+        samanPaymentProvider:
+          baseConfig: default
+        mellatPaymentProvider:
+          baseConfig: default
